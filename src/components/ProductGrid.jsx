@@ -23,10 +23,13 @@ export default function ProductGrid({ products, pageSize = 8 }) {
           <article
             key={product.id}
             className="flex flex-col rounded-xl border bg-white p-3 shadow-sm hover:shadow-md transition"
+            onClick={() => {
+              window.location.href = "/product/" + product.id;
+            }}
           >
             <div className="relative mb-3 overflow-hidden rounded-lg bg-slate-100">
               <img
-                src={product.image}
+                src={product.img1}
                 alt={product.name}
                 className="h-40 w-full object-cover"
               />
@@ -35,6 +38,7 @@ export default function ProductGrid({ products, pageSize = 8 }) {
               <h3 className="text-sm font-semibold line-clamp-2">
                 {product.name}
               </h3>
+              <h6 className="text-xs line-clamp-2">{product.code}</h6>
               <p className="mt-1 text-xs text-slate-500 line-clamp-2">
                 {product.description}
               </p>

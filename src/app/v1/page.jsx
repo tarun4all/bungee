@@ -1,9 +1,38 @@
+"use client";
+
 import OfferSlider from "../../components/OfferSlider";
 import ProductGrid from "../../components/ProductGrid";
 import { products } from "../../data/products";
 import { offers } from "../../data/offers";
+import { useEffect, useState } from "react";
 
 export default function Home() {
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
+
+  useEffect(() => {
+    async function loadProducts() {
+      try {
+        const res = await fetch("/api/products");
+        if (!res.ok) {
+          throw new Error("Failed to load products");
+        }
+        const json = await res.json();
+        setProducts(json.products || []);
+      } catch (err) {
+        console.error(err);
+        setError("Could not load products. Try again later.");
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    loadProducts();
+  }, []);
+
+  console.log({ products });
+
   return (
     <main className="min-h-screen bg-slate-50">
       {/* Top Nav */}
@@ -21,16 +50,16 @@ export default function Home() {
             </div>
           </div>
 
-          <div className="hidden sm:flex items-center gap-4 text-xs text-slate-600">
+          {/* <div className="hidden sm:flex items-center gap-4 text-xs text-slate-600">
             <button className="hover:text-slate-900">New</button>
             <button className="hover:text-slate-900">Clothing</button>
             <button className="hover:text-slate-900">Accessories</button>
             <button className="hover:text-slate-900">Electronics</button>
-          </div>
+          </div> */}
 
           <button className="flex items-center gap-1 rounded-full border px-3 py-1.5 text-xs font-medium hover:bg-slate-50">
             <span>🛒</span>
-            <span>Cart</span>
+            <span>Cart(Coming soon)</span>
             <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-slate-900 text-[10px] text-white">
               0
             </span>
@@ -39,7 +68,7 @@ export default function Home() {
       </header>
 
       {/* Offer Slider */}
-      <OfferSlider offers={offers} />
+      <OfferSlider images={["/b1.png", "b2.png"]} />
 
       {/* Content */}
       <section className="mx-auto max-w-6xl px-4 py-6 md:py-8">
@@ -53,7 +82,7 @@ export default function Home() {
             </p>
           </div>
           <div className="flex gap-2 text-xs">
-            <button className="rounded-full border px-3 py-1.5 hover:bg-slate-50">
+            {/* <button className="rounded-full border px-3 py-1.5 hover:bg-slate-50">
               All
             </button>
             <button className="rounded-full border px-3 py-1.5 hover:bg-slate-50">
@@ -64,7 +93,7 @@ export default function Home() {
             </button>
             <button className="rounded-full border px-3 py-1.5 hover:bg-slate-50">
               Electronics
-            </button>
+            </button> */}
           </div>
         </div>
 
