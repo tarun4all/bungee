@@ -34,23 +34,29 @@ export default function ImageSlider({
             className="flex transition-transform duration-700 ease-out h-full"
             style={{ transform: `translateX(-${index * 100}%)` }}
           >
-            {images.map((img, i) => (
+            {images.map((item, i) => {
+              const banner = typeof item === "string" ? { image_url: item } : item;
+              const picture = (
+                <img
+                  src={banner.image_url}
+                  alt={banner.alt || (i === 0 ? "Bungees connectivity products" : "Bungees product collection")}
+                  className="w-full h-full object-cover"
+                />
+              );
+              return (
               <div
                 key={i}
                 className="min-w-full h-full bg-slate-200 flex items-center justify-center"
               >
-                <img
-                  src={img}
-                  alt={`slide-${i}`}
-                  className="w-full h-full object-cover"
-                />
+                {banner.link_url ? <a href={banner.link_url} className="block h-full w-full" aria-label={banner.alt || `View offer ${i + 1}`}>{picture}</a> : picture}
               </div>
-            ))}
+            )})}
           </div>
 
           {/* Left Arrow */}
           <button
             onClick={goPrev}
+            aria-label="Previous promotion"
             className="absolute left-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-xl active:scale-95 transition"
           >
             ‹
@@ -59,6 +65,7 @@ export default function ImageSlider({
           {/* Right Arrow */}
           <button
             onClick={goNext}
+            aria-label="Next promotion"
             className="absolute right-4 top-1/2 -translate-y-1/2 bg-black/40 hover:bg-black/60 text-white p-3 rounded-full backdrop-blur-xl active:scale-95 transition"
           >
             ›
@@ -70,6 +77,7 @@ export default function ImageSlider({
               <button
                 key={i}
                 onClick={() => setIndex(i)}
+                aria-label={`Show promotion ${i + 1}`}
                 className={`transition-all rounded-full ${
                   index === i ? "w-6 h-2 bg-white" : "w-2 h-2 bg-white/40"
                 }`}
